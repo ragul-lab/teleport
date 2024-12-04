@@ -1,7 +1,7 @@
 let remote = document.getElementById('remote')
 let play = document.getElementById('play')
 
-const socket = io("http://192.168.31.217:3000");
+const socket = io("http://192.168.31.202:3000");
 let peer = new RTCPeerConnection()
 let channel
 let protect = false
@@ -68,7 +68,7 @@ window.addEventListener('resize', (e) => {
 })
 
 /* Capture Mouse Mouse Move */
-remote.addEventListener('click', (e) => {
+remote.addEventListener('mousemove', (e) => {
     if(connected){
         let posX = remote.offsetLeft
         let posY = remote.offsetTop
