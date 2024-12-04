@@ -35,6 +35,14 @@ def message(data):
     if data.get('type') == "mouse-right":
         right(data.get('x'), data.get('y'))
 
+    # Mouse wheel scroll (up)
+    if data.get('type') == "wheel-up":
+        wheel_up()
+
+    # Mouse wheel scroll (up)
+    if data.get('type') == "wheel-down":
+        wheel_down()
+
 # Event handler for disconnection
 @sio.event
 def disconnect():

@@ -27,3 +27,9 @@ def right(x, y):
     #X = float(x) / 100 * screenWidth
     #Y = float(y) / 100 * screenHeight
     pyautogui.rightClick()
+
+def wheel_up():
+    pyautogui.scroll(1)
+
+def wheel_down():
+    pyautogui.scroll(-1)

@@ -111,6 +111,19 @@ remote.addEventListener('contextmenu', (e) => {
     } 
 })
 
+/* Capture Mouse Scroll */
+remote.addEventListener('wheel', (e) => {
+    const delta = e.deltaY || e.detail || e.wheelDelta;
+
+    if (delta > 0) {
+        console.log('Scrolling down');
+        channel.send(JSON.stringify({type: 'wheel-up'}))
+    } else if (delta < 0) {
+        console.log('Scrolling up');
+        channel.send(JSON.stringify({type: 'wheel-down'}))
+    }
+})
+
 /* Capture Mouse Mouse Click */
 /*
 remote.addEventListener('click', (e) => {
