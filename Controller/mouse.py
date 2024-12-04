@@ -22,3 +22,8 @@ def unlock(x, y):
     #X = float(x) / 100 * screenWidth
     #Y = float(y) / 100 * screenHeight
     pyautogui.mouseUp(button='left')
+
+def right(x, y):
+    #X = float(x) / 100 * screenWidth
+    #Y = float(y) / 100 * screenHeight
+    pyautogui.rightClick()

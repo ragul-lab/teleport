@@ -23,13 +23,17 @@ def message(data):
     if data.get('type') == "mouse-click":
         click(data.get('x'), data.get('y'))
 
-    # Mouse drag (lock)
+    # Mouse drag (lock) | simulate left click
     if data.get('type') == "mouse-down":
         lock(data.get('x'), data.get('y'))
 
-    # Mouse drag (unlock)
+    # Mouse drag (unlock) | simulate left click
     if data.get('type') == "mouse-up":
         unlock(data.get('x'), data.get('y'))
+
+    # Mouse right click
+    if data.get('type') == "mouse-right":
+        right(data.get('x'), data.get('y'))
 
 # Event handler for disconnection
 @sio.event

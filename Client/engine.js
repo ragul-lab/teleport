@@ -78,18 +78,7 @@ remote.addEventListener('mousemove', (e) => {
     }
 })
 
-/* Capture Mouse Mouse Click */
-remote.addEventListener('click', (e) => {
-    if(connected){
-        let posX = remote.offsetLeft
-        let posY = remote.offsetTop
-        let tempX = (e.pageX - posX) / window.innerWidth * 100 
-        let tempY = (e.pageY - posY) / window.innerHeight * 100
-        channel.send(JSON.stringify({type: 'mouse-click', x: tempX, y: tempY}))
-    }
-})
-
-/* Mouse Drag */
+/* Capture Mouce click & Drag */
 isDrag = false
 remote.addEventListener('mousedown', (e) => {
     if(connected){
@@ -109,3 +98,28 @@ remote.addEventListener('mouseup', (e) => {
         channel.send(JSON.stringify({type: 'mouse-up', x: tempX, y: tempY}))
     }  
 })
+
+/* Capture Mouse Right Click */
+remote.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+    if(connected){
+        let posX = remote.offsetLeft
+        let posY = remote.offsetTop
+        let tempX = (e.pageX - posX) / window.innerWidth * 100 
+        let tempY = (e.pageY - posY) / window.innerHeight * 100
+        channel.send(JSON.stringify({type: 'mouse-right', x: tempX, y: tempY}))
+    } 
+})
+
+/* Capture Mouse Mouse Click */
+/*
+remote.addEventListener('click', (e) => {
+    if(connected){
+        let posX = remote.offsetLeft
+        let posY = remote.offsetTop
+        let tempX = (e.pageX - posX) / window.innerWidth * 100 
+        let tempY = (e.pageY - posY) / window.innerHeight * 100
+        channel.send(JSON.stringify({type: 'mouse-click', x: tempX, y: tempY}))
+    }
+})
+*/
