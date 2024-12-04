@@ -29,7 +29,7 @@ def right(x, y):
     pyautogui.rightClick()
 
 def wheel_up():
-    pyautogui.scroll(1)
+    pyautogui.scroll(10)
 
 def wheel_down():
-    pyautogui.scroll(-1)
+    pyautogui.scroll(-10)

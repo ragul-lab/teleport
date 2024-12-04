@@ -117,10 +117,10 @@ remote.addEventListener('wheel', (e) => {
 
     if (delta > 0) {
         console.log('Scrolling down');
-        channel.send(JSON.stringify({type: 'wheel-up'}))
+        channel.send(JSON.stringify({type: 'wheel-down'}))
     } else if (delta < 0) {
         console.log('Scrolling up');
-        channel.send(JSON.stringify({type: 'wheel-down'}))
+        channel.send(JSON.stringify({type: 'wheel-up'}))
     }
 })
 
