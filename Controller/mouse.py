@@ -12,3 +12,13 @@ def click(x, y):
     X = float(x) / 100 * screenWidth
     Y = float(y) / 100 * screenHeight
     pyautogui.click(X, Y)
+
+def lock(x, y):
+    #X = float(x) / 100 * screenWidth
+    #Y = float(y) / 100 * screenHeight
+    pyautogui.mouseDown(button='left')
+
+def unlock(x, y):
+    #X = float(x) / 100 * screenWidth
+    #Y = float(y) / 100 * screenHeight
+    pyautogui.mouseUp(button='left')

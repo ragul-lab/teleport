@@ -88,3 +88,24 @@ remote.addEventListener('click', (e) => {
         channel.send(JSON.stringify({type: 'mouse-click', x: tempX, y: tempY}))
     }
 })
+
+/* Mouse Drag */
+isDrag = false
+remote.addEventListener('mousedown', (e) => {
+    if(connected){
+        let posX = remote.offsetLeft
+        let posY = remote.offsetTop
+        let tempX = (e.pageX - posX) / window.innerWidth * 100 
+        let tempY = (e.pageY - posY) / window.innerHeight * 100
+        channel.send(JSON.stringify({type: 'mouse-down', x: tempX, y: tempY}))
+    }
+})
+remote.addEventListener('mouseup', (e) => {
+    if(connected){
+        let posX = remote.offsetLeft
+        let posY = remote.offsetTop
+        let tempX = (e.pageX - posX) / window.innerWidth * 100 
+        let tempY = (e.pageY - posY) / window.innerHeight * 100
+        channel.send(JSON.stringify({type: 'mouse-up', x: tempX, y: tempY}))
+    }  
+})
