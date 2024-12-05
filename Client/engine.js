@@ -125,7 +125,7 @@ remote.addEventListener('wheel', (e) => {
 })
 
 /* Capture Keyboard Events */
-remote.addEventListener('keypress', (e) => {
+window.addEventListener('keydown', (e) => {
 
     if(e.ctrlKey || e.altKey || e.shiftKey){
         if (e.ctrlKey && e.key === 'c' || e.ctrlKey && e.key === 'C') {
@@ -145,7 +145,7 @@ remote.addEventListener('keypress', (e) => {
     }
 
     channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
-
+    console.log(e.key);
 })
 
 /*
