@@ -1,4 +1,5 @@
 from mouse import *
+from keyboard import *
 import socketio
 import json
 
@@ -42,6 +43,14 @@ def message(data):
     # Mouse wheel scroll (up)
     if data.get('type') == "wheel-down":
         wheel_down()
+
+    # Keyboard keys
+    if data.get('type') == "key-stroke":
+        keystroke(data.get('key'))
+
+    # keyboard shortcuts
+    if data.get('type') == "short-key":
+        shortcut(data.get('key'))
 
 # Event handler for disconnection
 @sio.event

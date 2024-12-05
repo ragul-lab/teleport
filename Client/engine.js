@@ -124,6 +124,45 @@ remote.addEventListener('wheel', (e) => {
     }
 })
 
+/* Capture Keyboard Events */
+remote.addEventListener('keypress', (e) => {
+
+    if(e.ctrlKey || e.altKey || e.shiftKey){
+        if (e.ctrlKey && e.key === 'c' || e.ctrlKey && e.key === 'C') {
+            e.preventDefault();
+            channel.send(JSON.stringify({type: 'short-key', key: 'copy'}))
+        } else if (e.ctrlKey && e.key === 'x' || e.ctrlKey && e.key === 'X') {
+            e.preventDefault();
+            channel.send(JSON.stringify({type: 'short-key', key: 'cut'}))
+        } else if (e.ctrlKey && e.key === 'v' || e.ctrlKey && e.key === 'V') {
+            e.preventDefault();
+            channel.send(JSON.stringify({type: 'short-key', key: 'paste'}))
+        }
+        else if (e.ctrlKey && e.key === 'z' || e.ctrlKey && e.key === 'Z') {
+            e.preventDefault();
+            channel.send(JSON.stringify({type: 'short-key', key: 'undo'}))
+        }
+    }
+
+    channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
+
+})
+
+/*
+Ctrl + C: Copy the selected item.
+Ctrl + X: Cut the selected item.
+Ctrl + V: Paste the copied or cut item.
+Ctrl + Z: Undo the last action.
+Ctrl + Y: Redo the last undone action.
+Ctrl + A: Select all items.
+Ctrl + D: Delete the selected item and move it to the Recycle Bin.
+Ctrl + Shift + Esc: Open Task Manager directly.
+Ctrl + Alt + Del: Open the Security options screen (Task Manager, Lock, Log Off, etc.).
+Ctrl + F4: Close the current window/tab in many applications.
+Alt + Tab: Switch between open applications.
+Alt + F4: Close the currently focused window or application.
+*/
+
 /* Capture Mouse Mouse Click */
 /*
 remote.addEventListener('click', (e) => {
