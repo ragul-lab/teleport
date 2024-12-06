@@ -147,11 +147,12 @@ window.addEventListener('keydown', (e) => {
             console.log(JSON.stringify({type: 'short-key', key: 'save'}))
         }
         else if (e.shiftKey && e.key.length == 1){
+            channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
             console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
         }
     }
     else{
-        //channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
+        channel.send(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
         console.log(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
     }
 })
