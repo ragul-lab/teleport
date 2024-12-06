@@ -44,7 +44,12 @@ let createOffer = () => {
         chromeMediaSourceId: 'screen:0:0'
     },
     cursor: 'never'
-    }, audio: false})
+    },
+    audio: {
+      mandatory: {
+          chromeMediaSource: 'desktop'
+      }
+    }})
     .then((stream) => {
         let channel = peer.createDataChannel('channel')
 
