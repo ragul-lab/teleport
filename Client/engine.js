@@ -128,6 +128,7 @@ remote.addEventListener('wheel', (e) => {
 window.addEventListener('keydown', (e) => {
     e.preventDefault();
     if(e.ctrlKey || e.altKey || e.shiftKey){
+        // Shortcut keys
         if (e.ctrlKey && e.key === 'c' || e.ctrlKey && e.key === 'C') {
             channel.send(JSON.stringify({type: 'short-key', key: 'copy'}))
             console.log(JSON.stringify({type: 'short-key', key: 'copy'}))
@@ -146,8 +147,38 @@ window.addEventListener('keydown', (e) => {
             channel.send(JSON.stringify({type: 'short-key', key: 'save'}))
             console.log(JSON.stringify({type: 'short-key', key: 'save'}))
         }
+        else if (e.ctrlKey && e.key === 'a' || e.ctrlKey && e.key === 'A') {
+            channel.send(JSON.stringify({type: 'short-key', key: 'all'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'all'}))
+        }
+        else if (e.ctrlKey && e.key === 'y' || e.ctrlKey && e.key === 'Y') {
+            channel.send(JSON.stringify({type: 'short-key', key: 'redo'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'redo'}))
+        }
+        else if (e.ctrlKey && e.key === 'd' || e.ctrlKey && e.key === 'D') {
+            channel.send(JSON.stringify({type: 'short-key', key: 'delete'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'delete'}))
+        }
+        // Captial keys (shfit + key)
         else if (e.shiftKey && e.key.length == 1){
             channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
+            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
+        }
+        // Arrow keys
+        else if (e.key.toLowerCase() == 'arrowup'){
+            channel.send(JSON.stringify({type: 'key-stroke', key: 'up'}))
+            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
+        }
+        else if (e.key.toLowerCase() == 'arrowdown'){
+            channel.send(JSON.stringify({type: 'key-stroke', key: 'down'}))
+            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
+        }
+        else if (e.key.toLowerCase() == 'arrowleft'){
+            channel.send(JSON.stringify({type: 'key-stroke', key: 'left'}))
+            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
+        }
+        else if (e.key.toLowerCase() == 'arrowright'){
+            channel.send(JSON.stringify({type: 'key-stroke', key: 'right'}))
             console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
         }
     }
@@ -157,17 +188,21 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
+// Control + function keys
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'F4') {
+        e.preventDefault();
+        channel.send(JSON.stringify({type: 'short-key', key: 'close'}))
+        console.log(JSON.stringify({type: 'short-key', key: 'close'}))
+    }
+});
+window.addEventListener('beforeunload', (e) => {
+    e.returnValue = 'Are you sure you want to leave?'
+});
+
 /*
-Ctrl + C: Copy the selected item.
-Ctrl + X: Cut the selected item.
-Ctrl + V: Paste the copied or cut item.
-Ctrl + Z: Undo the last action.
-Ctrl + Y: Redo the last undone action.
-Ctrl + A: Select all items.
-Ctrl + D: Delete the selected item and move it to the Recycle Bin.
 Ctrl + Shift + Esc: Open Task Manager directly.
 Ctrl + Alt + Del: Open the Security options screen (Task Manager, Lock, Log Off, etc.).
-Ctrl + F4: Close the current window/tab in many applications.
 Alt + Tab: Switch between open applications.
 Alt + F4: Close the currently focused window or application.
 */

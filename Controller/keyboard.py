@@ -20,3 +20,11 @@ def shortcut(cmd):
         pyautogui.hotkey('ctrl', 'z')
     elif cmd == 'save':
         pyautogui.hotkey('ctrl', 's')
+    elif cmd == 'all':
+        pyautogui.hotkey('ctrl', 'a')
+    elif cmd == 'redo':
+        pyautogui.hotkey('ctrl', 'y')
+    elif cmd == 'delete':
+        pyautogui.hotkey('ctrl', 'd')
+    elif cmd == 'close':
+        pyautogui.hotkey('ctrl', 'f4')
