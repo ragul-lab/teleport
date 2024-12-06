@@ -60,6 +60,7 @@ play.addEventListener('click', (e) => {
 
     remote.style.width = window.innerWidth+'px'
     remote.style.height = window.innerHeight+'px'
+    document.body.style.cursor = 'none'
 })
 
 window.addEventListener('resize', (e) => {
@@ -164,8 +165,10 @@ window.addEventListener('keydown', (e) => {
             channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
             console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
         }
+    }
+    else{
         // Arrow keys
-        else if (e.key.toLowerCase() == 'arrowup'){
+        if (e.key.toLowerCase() == 'arrowup'){
             channel.send(JSON.stringify({type: 'key-stroke', key: 'up'}))
             console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
         }
@@ -181,10 +184,11 @@ window.addEventListener('keydown', (e) => {
             channel.send(JSON.stringify({type: 'key-stroke', key: 'right'}))
             console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
         }
-    }
-    else{
-        channel.send(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
-        console.log(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
+        // alphabets
+        else{
+            channel.send(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
+            console.log(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
+        }
     }
 })
 
