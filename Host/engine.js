@@ -39,11 +39,13 @@ let createOffer = () => {
 
   // Get media devices and create data channel & offer
   navigator.mediaDevices.getUserMedia({video: {
-    mandatory: {              
-        chromeMediaSource: 'desktop',
-        chromeMediaSourceId: 'screen:0:0'
-    },
-    cursor: 'never'
+      mandatory: {              
+          chromeMediaSource: 'desktop',
+          chromeMediaSourceId: 'screen:0:0',
+          width: { ideal: 1920 }, // Set the maximum width
+          height: { ideal: 1080 }, // Set the maximum height
+          frameRate: { ideal: 30, max: 60 }, // Set the max FPS
+      }
     },
     audio: {
       mandatory: {
