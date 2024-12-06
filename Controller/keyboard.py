@@ -26,5 +26,37 @@ def shortcut(cmd):
         pyautogui.hotkey('ctrl', 'y')
     elif cmd == 'delete':
         pyautogui.hotkey('ctrl', 'd')
+    elif cmd == 'print':
+        pyautogui.hotkey('ctrl', 'p')
+    elif cmd == 'reload':
+        pyautogui.hotkey('ctrl', 'r')
     elif cmd == 'close':
         pyautogui.hotkey('ctrl', 'f4')
+    elif cmd == 'switch':
+        pyautogui.hotkey('alt', 'tab')
+    elif cmd == 'cycle':
+        pyautogui.hotkey('alt', 'escape')
+    elif cmd == 'space':
+        pyautogui.hotkey('alt', 'space')
+    elif cmd == 'props':
+        pyautogui.hotkey('alt', 'enter')
+    elif cmd == 'prev':
+        pyautogui.hotkey('alt', 'left')
+    elif cmd == 'forw':
+        pyautogui.hotkey('alt', 'right')
+    elif cmd == 'focus':
+        pyautogui.hotkey('alt', 'd')
+    elif cmd == 'edit':
+        pyautogui.hotkey('alt', 'e')
+    elif cmd == 'file':
+        pyautogui.hotkey('alt', 'f')
+    elif cmd == 'help':
+        pyautogui.hotkey('alt', 'h')
+    elif cmd == 'insert':
+        pyautogui.hotkey('alt', 'i')
+    elif cmd == 'ribbon':
+        pyautogui.hotkey('alt', 'j')
+    elif cmd == 'mail':
+        pyautogui.hotkey('alt', 'm')
+    elif cmd == 'new':
+        pyautogui.hotkey('alt', 'n')
