@@ -126,26 +126,34 @@ remote.addEventListener('wheel', (e) => {
 
 /* Capture Keyboard Events */
 window.addEventListener('keydown', (e) => {
-
+    e.preventDefault();
     if(e.ctrlKey || e.altKey || e.shiftKey){
         if (e.ctrlKey && e.key === 'c' || e.ctrlKey && e.key === 'C') {
-            e.preventDefault();
             channel.send(JSON.stringify({type: 'short-key', key: 'copy'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'copy'}))
         } else if (e.ctrlKey && e.key === 'x' || e.ctrlKey && e.key === 'X') {
-            e.preventDefault();
             channel.send(JSON.stringify({type: 'short-key', key: 'cut'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'cut'}))
         } else if (e.ctrlKey && e.key === 'v' || e.ctrlKey && e.key === 'V') {
-            e.preventDefault();
             channel.send(JSON.stringify({type: 'short-key', key: 'paste'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'paste'}))
         }
         else if (e.ctrlKey && e.key === 'z' || e.ctrlKey && e.key === 'Z') {
-            e.preventDefault();
             channel.send(JSON.stringify({type: 'short-key', key: 'undo'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'undo'}))
+        }
+        else if (e.ctrlKey && e.key === 's' || e.ctrlKey && e.key === 'S') {
+            channel.send(JSON.stringify({type: 'short-key', key: 'save'}))
+            console.log(JSON.stringify({type: 'short-key', key: 'save'}))
+        }
+        else if (e.shiftKey && e.key.length == 1){
+            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
         }
     }
-
-    channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
-    console.log(e.key);
+    else{
+        //channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
+        console.log(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
+    }
 })
 
 /*

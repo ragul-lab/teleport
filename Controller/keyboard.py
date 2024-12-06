@@ -4,7 +4,10 @@ pyautogui.FAILSAFE = False
 screenWidth, screenHeight = pyautogui.size()
 
 def keystroke(key):
-    pyautogui.write(key)
+    try:
+        pyautogui.press(key)
+    except:
+        pass
 
 def shortcut(cmd):
     if cmd == 'copy':
@@ -15,3 +18,5 @@ def shortcut(cmd):
         pyautogui.hotkey('ctrl', 'v')
     elif cmd == 'undo':
         pyautogui.hotkey('ctrl', 'z')
+    elif cmd == 'save':
+        pyautogui.hotkey('ctrl', 's')
