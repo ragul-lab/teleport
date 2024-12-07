@@ -10,6 +10,11 @@ let protect = false
 io.on('connection', (socket) => {
   console.log('Client connected', socket.id);
 
+  // To check driver is online or not
+  socket.on('driver-online', (msg) => {
+    ipcRenderer.send('driver-online');
+  })
+
   // Create offer and send to client
   socket.on('offer', (e) => {
     createOffer()

@@ -6,4 +6,5 @@ html, body{
 
 video{
     object-fit: fill;
+    display: none;
 }

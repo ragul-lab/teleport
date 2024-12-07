@@ -10,6 +10,7 @@ sio = socketio.Client()
 @sio.event
 def connect():
     print('Connected to the server')
+    sio.emit('driver-online', {'status': 'online'})
 
 # Event handler for receiving messages from the server
 @sio.event

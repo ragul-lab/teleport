@@ -55,6 +55,7 @@ let createAnswer = (offer) => {
 }
 
 play.addEventListener('click', (e) => {
+    remote.style.display = 'block'
     remote.play()
     play.remove()
 
