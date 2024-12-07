@@ -9,6 +9,13 @@ def keystroke(key):
     except:
         pass
 
+def shortcut(hold, key):
+    try:
+        pyautogui.hotkey(hold, key)
+    except
+        print('Unknow key combination')
+
+'''
 def shortcut(cmd):
     if cmd == 'copy':
         pyautogui.hotkey('ctrl', 'c')
@@ -60,3 +67,4 @@ def shortcut(cmd):
         pyautogui.hotkey('alt', 'm')
     elif cmd == 'new':
         pyautogui.hotkey('alt', 'n')
+'''

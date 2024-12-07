@@ -50,7 +50,11 @@ def message(data):
 
     # keyboard shortcuts
     if data.get('type') == "short-key":
+        shortcut(data.get('hold'), data.get('key'))
+    '''
+    if data.get('type') == "short-key":
         shortcut(data.get('key'))
+    '''
 
 # Event handler for disconnection
 @sio.event
