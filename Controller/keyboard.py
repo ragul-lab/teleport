@@ -12,8 +12,8 @@ def keystroke(key):
 def shortcut(hold, key):
     try:
         pyautogui.hotkey(hold, key)
-    except
-        print('Unknow key combination')
+    except:
+        pass
 
 '''
 def shortcut(cmd):
