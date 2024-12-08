@@ -1,4 +1,5 @@
 let remote = document.getElementById('remote')
+let web = document.getElementById('web')
 let play = document.getElementById('play')
 
 const socket = io("http://192.168.31.202:3000");
@@ -55,9 +56,12 @@ let createAnswer = (offer) => {
 }
 
 play.addEventListener('click', (e) => {
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+    web.remove()
     remote.style.display = 'block'
+    remote.controls = false
     remote.play()
-    play.remove()
 
     remote.style.width = window.innerWidth+'px'
     remote.style.height = window.innerHeight+'px'
