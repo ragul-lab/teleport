@@ -1,20 +1,25 @@
 let remote = document.getElementById('remote')
 let web = document.getElementById('web')
-let play = document.getElementById('play')
+let stream = document.getElementById('stream')
+let address = document.getElementById('address')
 
-const socket = io("http://192.168.31.202:3000");
+let socket
 let peer = new RTCPeerConnection()
 let channel
 let protect = false
 let connected = false
 
-socket.emit('offer', 'Requesting for offer')
+stream.addEventListener('click', (e) => {
+    socket = io(`http://${address.value}:3000`);
 
-socket.on('offer', (offer) => {
-    if(protect == false){
-        createAnswer(offer)
-        protect = true
-    }
+    socket.emit('offer', 'Requesting for offer')
+
+    socket.on('offer', (offer) => {
+        if(protect == false){
+            createAnswer(offer)
+            protect = true
+        }
+    })
 })
 
 let createAnswer = (offer) => {
@@ -25,6 +30,17 @@ let createAnswer = (offer) => {
         channel.onopen = (e) => {
             connected = true
             console.log('Connection Opened');
+
+            document.documentElement.style.overflow = 'hidden'
+            document.body.style.overflow = 'hidden'
+            web.remove()
+            remote.style.display = 'block'
+            remote.controls = false
+            remote.play()
+        
+            remote.style.width = window.innerWidth+'px'
+            remote.style.height = window.innerHeight+'px'
+            document.body.style.cursor = 'none'
         }
 
         channel.onmessage = (e) => {
@@ -54,19 +70,6 @@ let createAnswer = (offer) => {
         }
     }
 }
-
-play.addEventListener('click', (e) => {
-    document.documentElement.style.overflow = 'hidden'
-    document.body.style.overflow = 'hidden'
-    web.remove()
-    remote.style.display = 'block'
-    remote.controls = false
-    remote.play()
-
-    remote.style.width = window.innerWidth+'px'
-    remote.style.height = window.innerHeight+'px'
-    document.body.style.cursor = 'none'
-})
 
 window.addEventListener('resize', (e) => {
     remote.style.width = window.innerWidth+'px'
