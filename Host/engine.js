@@ -2,6 +2,7 @@ const { ipcRenderer } = require('electron');
 const app = require("express")();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, { cors: { origin: "*" } });
+const { exec } = require('child_process');
 
 let peer
 let protect = false
@@ -33,11 +34,33 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Client disconnected');
     ipcRenderer.send('reload-window');
+
+    let timer = setTimeout(() => {
+      exec('controller.exe', (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          return;
+        }
+        console.log(`stdout: ${stdout}`);
+        console.error(`stderr: ${stderr}`);
+      });
+      clearTimeout(timer)
+    }, 5000)
   });
 });
 
 // Start the server on port 3000
-server.listen(3000, () => {console.log('Server is running on http://localhost:3000')});
+server.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000')
+  exec('controller.exe', (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+  });
+});
 
 let createOffer = () => {
   peer = new RTCPeerConnection()

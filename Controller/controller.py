@@ -2,6 +2,7 @@ from mouse import *
 from keyboard import *
 import socketio
 import json
+import sys
 
 # Create a Socket.io client instance
 sio = socketio.Client()
@@ -61,21 +62,10 @@ def message(data):
 @sio.event
 def disconnect():
     print('Disconnected from the server')
+    sys.exit()
 
 # Connect to the Node.js server
 sio.connect('http://127.0.0.1:3000')
 
 # Keep the program running to listen for events
 sio.wait()
-
-
-'''
-from bottle import route, run
-
-@route('/')
-def hello():
-    return "Keyboard, Mouse & Gamepad Controller\nStatus: Running/Online"
-
-if __name__ == '__main__':
-    run(host='0.0.0.0', port=8080, debug=True)
-'''
