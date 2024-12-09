@@ -11,29 +11,31 @@
     <script src="engine.js" defer></script>
 </head>
 <body>
-    <section class="hero is-fullheight is-flex is-flex-wrap-wrap is-justify-content-space-evenly is-align-items-center is-flex-direction-row" id="web">
-        <div class="brand">
-            <img src="./one.png" height="500" width="300"/>
-        </div>
-        <div class="mx-4">
-            <p class="title-style title is-size-1 poppins-bold">Teleport</p>
-            <p class="poppins-regular is-size-4">WebRTC Remote Desktop Access</p>
-            <div class="is-flex mt-4">
-                <div class="field mt-3">
-                    <p class="control has-icons-left has-icons-right">
-                      <input class="input is-small poppins-regular" type="email" placeholder="Local IP Address" id="address"/>
-                      <span class="icon is-small is-left">
-                        <i class="fa-solid fa-wifi"></i>
-                      </span>
-                    </p>
-                </div>
-                <div class="buttons are-small ml-3">
-                    <button class="button" id="stream">
-                        <img src="./cast.png" width="20" height="30" />
-                    </button>
-                </div>                  
+    <section class="hero is-fullheight is-flex is-justify-content-space-evenly" id="web">
+        <div class="wrapper wrapper is-flex is-flex-wrap-wrap is-justify-content-space-evenly is-flex-direction-row">
+            <div class="brand">
+                <img src="./one.png" height="500" width="300"/>
             </div>
-            <p class="poppins-regular" style="font-size: 60%;">Example: 192.168.x.x</p>
+            <div class="mx-4">
+                <p class="title-style title is-size-1 poppins-bold">Teleport</p>
+                <p class="poppins-regular is-size-4">WebRTC Remote Desktop Access</p>
+                <div class="is-flex mt-4">
+                    <div class="field mt-3">
+                        <p class="control has-icons-left has-icons-right">
+                          <input class="input is-small poppins-regular" type="email" placeholder="Local IP Address" id="address"/>
+                          <span class="icon is-small is-left">
+                            <i class="fa-solid fa-wifi"></i>
+                          </span>
+                        </p>
+                    </div>
+                    <div class="buttons are-small ml-3">
+                        <button class="button" id="stream">
+                            <img src="./cast.png" width="20" height="30" />
+                        </button>
+                    </div>                  
+                </div>
+                <p class="poppins-regular" style="font-size: 60%;">Example: 192.168.x.x</p>
+            </div>
         </div>
         <div class="content has-text-centered">
             <p class="poppins-regular">
