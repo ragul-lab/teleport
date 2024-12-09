@@ -6,9 +6,9 @@ let keyboard = 'Offline', mouse = 'Offline'
 
 const createWindow = () => {
     win = new BrowserWindow({
-      width: 800,
-      height: 600,
-      frame: true,
+      width: 0,
+      height: 0,
+      frame: false,
 
       webPreferences: {
         nodeIntegration: true,
@@ -24,7 +24,7 @@ const createWindow = () => {
     })
     .catch(e => console.log(e))
   
-    //win.hide()
+    win.hide()
     win.loadFile('index.html')
 }
 
