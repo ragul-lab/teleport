@@ -10,6 +10,10 @@ video{
     display: none;
 }
 
+.wrapper {
+  height: 80vh;
+}
+
 .title-style{
     background: #3290ff;
     background: linear-gradient(to right, #3290FF 0%, #85CEFE 100%);
