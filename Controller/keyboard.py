@@ -1,4 +1,5 @@
 import pyautogui
+import time
 
 pyautogui.FAILSAFE = False
 screenWidth, screenHeight = pyautogui.size()
