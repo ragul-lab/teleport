@@ -134,210 +134,58 @@ remote.addEventListener('wheel', (e) => {
 })
 
 /* Capture Keyboard Events */
-let ctrl = false, alt = false, shift = false
-window.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', function(e) {
     e.preventDefault()
-    if(e.ctrlKey){
-        ctrl = true
-    }
-    else if(e.altKey){
-        alt = true
-    }
-    else if(e.shiftKey){
-        shift = true
-    }
-    else{
-        // Arrow keys
-        if (e.key.toLowerCase() == 'arrowup'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'up'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        else if (e.key.toLowerCase() == 'arrowdown'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'down'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        else if (e.key.toLowerCase() == 'arrowleft'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'left'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        else if (e.key.toLowerCase() == 'arrowright'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'right'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        // alphabets
-        else{
-            channel.send(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
-        }
-    }
-})
+    if (e.ctrlKey || e.altKey || e.shiftKey) {
+        let modifiers = [];
+        if (e.ctrlKey) modifiers.push('ctrl');
+        if (e.altKey) modifiers.push('alt');
+        if (e.shiftKey) modifiers.push('shift');
 
-window.addEventListener('keyup', (e) => {
-    let timer = setTimeout(() => {
-        ctrl = false
-        alt = false
-        shift = false
-        clearTimeout(timer)
-    },500)
-    
-    if(ctrl && e.key.toLowerCase() != 'control'){
-        channel.send(JSON.stringify({type: 'short-key', hold: 'ctrl', key: e.key}))
-        console.log(JSON.stringify({type: 'short-key', hold: 'ctrl', key: e.key}))
-        ctrl = false
-    }
-    else if(alt && e.key.toLowerCase() != 'alt'){
-        channel.send(JSON.stringify({type: 'short-key', hold: 'alt', key: e.key}))
-        console.log(JSON.stringify({type: 'short-key', hold: 'alt', key: e.key}))
-        alt = false
-    }
-    else if(shift && e.key.toLowerCase() != 'shift'){
-        channel.send(JSON.stringify({type: 'short-key', hold: 'shift', key: e.key}))
-        console.log(JSON.stringify({type: 'short-key', hold: 'shift', key: e.key}))
-        shift = false
-    }
-})
+        let keyPressed = e.key.toLowerCase();
 
-
-
-
-
-
-
-
-/*
-window.addEventListener('keydown', (e) => {
-    e.preventDefault();
-    if(e.ctrlKey || e.altKey || e.shiftKey){
-        // Ctrl Shortcut keys
-        if (e.ctrlKey && e.key.toLowerCase() === 'c') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'copy'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'copy'}))
-        } 
-        else if (e.ctrlKey && e.key.toLowerCase() === 'x') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'cut'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'cut'}))
-        } 
-        else if (e.ctrlKey && e.key.toLowerCase() === 'v') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'paste'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'paste'}))
-        }
-        else if (e.ctrlKey && e.key.toLowerCase() === 'z') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'undo'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'undo'}))
-        }
-        else if (e.ctrlKey && e.key.toLowerCase() === 's') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'save'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'save'}))
-        }
-        else if (e.ctrlKey && e.key.toLowerCase() === 'a') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'all'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'all'}))
-        }
-        else if (e.ctrlKey && e.key.toLowerCase() === 'y') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'redo'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'redo'}))
-        }
-        else if (e.ctrlKey && e.key.toLowerCase() === 'd') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'delete'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'delete'}))
-        }
-        else if (e.ctrlKey && e.key.toLowerCase() === 'p') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'print'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'print'}))
-        }
-        else if (e.ctrlKey && e.key.toLowerCase() === 'r') {
-            channel.send(JSON.stringify({type: 'short-key', key: 'reload'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'reload'}))
-        }
-        // Captial keys (shfit + key)
-        else if (e.shiftKey && e.key.length == 1){
-            channel.send(JSON.stringify({type: 'key-stroke', key: e.key}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        // Alt Shortcut keys
-        else if (e.altKey && e.key.toLowerCase() === 'tab'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'switch'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'switch'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'escape'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'cycle'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'cycle'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === " "){
-            channel.send(JSON.stringify({type: 'short-key', key: 'space'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'space'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'enter'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'props'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'props'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'arrowleft'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'prev'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'prev'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'arrowright'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'forw'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'forw'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'd'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'focus'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'focus'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'e'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'edit'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'edit'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'f'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'file'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'file'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'h'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'help'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'help'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'i'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'insert'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'insert'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'j'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'ribbon'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'ribbon'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'm'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'mail'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'mail'}))
-        }
-        else if (e.altKey && e.key.toLowerCase() === 'n'){
-            channel.send(JSON.stringify({type: 'short-key', key: 'new'}))
-            console.log(JSON.stringify({type: 'short-key', key: 'new'}))
+        if (modifiers.length > 0 && keyPressed !== 'control' && keyPressed !== 'alt' && keyPressed !== 'shift'){
+            if(modifiers.length == 1){
+                channel.send(JSON.stringify({type: 'short-2-key', hold: modifiers[0], key: keyPressed}))
+                console.log(JSON.stringify({type: 'short-2-key', hold: modifiers[0], key: keyPressed}))
+            }
+            else if(modifiers.length == 2){
+                console.log(JSON.stringify({
+                    type: 'short-3-key',
+                    key_1: modifiers[0],
+                    key_2: modifiers[1], 
+                    key_3: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                }))
+                channel.send(JSON.stringify({
+                    type: 'short-3-key',
+                    key_1: modifiers[0],
+                    key_2: modifiers[1], 
+                    key_3: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                }))
+            }
         }
     }
     else{
+        let keyPressed = e.key.toLowerCase();
+
         // Arrow keys
-        if (e.key.toLowerCase() == 'arrowup'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'up'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        else if (e.key.toLowerCase() == 'arrowdown'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'down'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        else if (e.key.toLowerCase() == 'arrowleft'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'left'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
-        }
-        else if (e.key.toLowerCase() == 'arrowright'){
-            channel.send(JSON.stringify({type: 'key-stroke', key: 'right'}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key}))
+        if (keyPressed == 'arrowup' || keyPressed == 'arrowdown' || keyPressed == 'arrowleft' || keyPressed == 'arrowright'){
+            console.log(JSON.stringify({
+                type: 'key-stroke', 
+                key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : null
+            }))
+            channel.send(JSON.stringify({
+                type: 'key-stroke', 
+                key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : null
+            }))
         }
         // alphabets
         else{
-            channel.send(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
-            console.log(JSON.stringify({type: 'key-stroke', key: e.key.toLowerCase()}))
+            console.log(JSON.stringify({type: 'key-stroke', key: keyPressed.toLowerCase()}))
+            channel.send(JSON.stringify({type: 'key-stroke', key: keyPressed.toLowerCase()}))
         }
     }
-})
-*/
+});
 
 // Control + function keys
 /*

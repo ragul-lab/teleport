@@ -9,9 +9,15 @@ def keystroke(key):
     except:
         pass
 
-def shortcut(hold, key):
+def short2cut(hold, key):
     try:
         pyautogui.hotkey(hold, key)
+    except:
+        pass
+
+def short3cut(key_1, key_2, key_3):
+    try:
+        pyautogui.hotkey(key_1, key_2, key_3)
     except:
         pass
 
