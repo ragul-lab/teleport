@@ -146,8 +146,16 @@ window.addEventListener('keydown', function(e) {
 
         if (modifiers.length > 0 && keyPressed !== 'control' && keyPressed !== 'alt' && keyPressed !== 'shift'){
             if(modifiers.length == 1){
-                channel.send(JSON.stringify({type: 'short-2-key', hold: modifiers[0], key: keyPressed}))
-                console.log(JSON.stringify({type: 'short-2-key', hold: modifiers[0], key: keyPressed}))
+                channel.send(JSON.stringify({
+                    type: 'short-2-key', 
+                    hold: modifiers[0], 
+                    key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                }))
+                console.log(JSON.stringify({
+                    type: 'short-2-key', 
+                    hold: modifiers[0], 
+                    key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                }))
             }
             else if(modifiers.length == 2){
                 console.log(JSON.stringify({
