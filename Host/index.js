@@ -1,8 +1,10 @@
 const { app, BrowserWindow, desktopCapturer, ipcMain, Menu, Tray } = require('electron')
+const path = require('path');
 
 let win
 let tray = null
 let keyboard = 'Offline', mouse = 'Offline'
+const trayIconPath = path.join(__dirname, 'cast.png') 
 
 const createWindow = () => {
     win = new BrowserWindow({
@@ -65,6 +67,6 @@ ipcMain.on('driver-online', (event) => {
 
 app.whenReady().then(() => {
     createWindow()
-    tray = new Tray('./cast.png')
+    tray = new Tray(trayIconPath)
     updateTray()
 })
