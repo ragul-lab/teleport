@@ -30,6 +30,23 @@ io.on('connection', (socket) => {
     }
   })
 
+  /* Gampead test */
+  socket.on('gamepad-button', (btn) => {
+    io.emit('message', btn)
+    console.log(btn);
+  })
+
+  socket.on('left-axis', (axis) => {
+    console.log(axis);
+    io.emit('message', axis)
+  })
+
+  socket.on('right-axis', (axis) => {
+    console.log(axis);
+    io.emit('message', axis)
+  })
+  /* Gampead test */
+
   // Handle disconnection
   socket.on('disconnect', () => {
     console.log('Client disconnected');

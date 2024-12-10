@@ -8,15 +8,15 @@ const trayIconPath = path.join(__dirname, 'cast.png')
 
 const createWindow = () => {
     win = new BrowserWindow({
-      width: 0,
-      height: 0,
-      frame: false,
+      width: 800,
+      height: 600,
+      //frame: false, // Uncomment this
 
       webPreferences: {
         nodeIntegration: true,
         nodeIntegrationInWorker: true,
         contextIsolation: false,
-        //devTools: false
+        //devTools: false -> Uncomment this
       }
     })
 
@@ -26,7 +26,7 @@ const createWindow = () => {
     })
     .catch(e => console.log(e))
   
-    win.hide()
+    //win.hide() -> Uncomment this
     win.loadFile('index.html')
 }
 

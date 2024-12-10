@@ -9,6 +9,13 @@ let channel
 let protect = false
 let connected = false
 
+/* Variables for gamepad controls */
+let gamepadIndex = null
+const buttonsOfXbox = ['A', 'B', 'X', 'Y', 'LEFT_SHOULDER', 'RIGHT_SHOULDER', 'LEFT_TRIGGER', 'RIGHT_TRIGGER', 'BACK', 'START', 'LEFT_THUMB', 'RIGHT_THUMB', 'DPAD_UP', 'DPAD_DOWN', 'DPAD_LEFT', 'DPAD_RIGHT', 'GUIDE']
+const axisOfXbox = ['LEFT_X_AXIS', 'LEFT_Y_AXIS', 'RIGHT_X_AXIS', 'RIGHT_Y_AXIS']
+let registeredAxis = []
+let goForOnline = false
+
 stream.addEventListener('click', (e) => {
     socket = io(`http://${address.value}:3000`);
 
@@ -221,3 +228,86 @@ remote.addEventListener('click', (e) => {
     }
 })
 */
+
+
+/* Gamepad mechanism */
+window.addEventListener("gamepadconnected", function(event) {
+    console.log("Gamepad connected:", event.gamepad);
+    console.log("Gamepad index:", event.gamepad.index);
+    gamepadIndex = event.gamepad.index
+});
+  
+window.addEventListener("gamepaddisconnected", function(event) {
+    console.log("Gamepad disconnected:", event.gamepad);
+    console.log("Gamepad disconnected:", event.gamepad.index);
+    gamepadIndex = null
+});
+  
+function pollGamepad() {
+    const gamepads = navigator.getGamepads();
+  
+    // If there is a gamepad connected (e.g., first gamepad)
+    if (gamepads[0]) {
+        const gamepad = gamepads[gamepadIndex];
+  
+        // Log the ID of the gamepad
+        //console.log("Gamepad ID: ", gamepad.id);
+  
+        // Log button presses
+        gamepad.buttons.forEach((button, index) => {
+            if (button.pressed) {
+              if(buttonsOfXbox[index] == 'START'){
+                goForOnline = true
+                console.log(buttonsOfXbox[index],' is pressed');
+                //socket.emit('gamepad-button', JSON.stringify({btn: buttonsOfXbox[index]}))
+                channel.send(JSON.stringify({btn: buttonsOfXbox[index]}))
+              }
+              else if(goForOnline){
+                console.log(buttonsOfXbox[index],' is pressed');
+                //socket.emit('gamepad-button', JSON.stringify({btn: buttonsOfXbox[index]}))
+                channel.send(JSON.stringify({btn: buttonsOfXbox[index]}))
+              }
+              else{
+                console.log('Please press start button to activate controller');
+              }
+            }
+        });
+  
+        // Log joystick axes values
+        if (gamepad && goForOnline) {
+          if(!registeredAxis[0]){
+            registeredAxis[0] = gamepad.axes[0]
+          }
+          else if(!registeredAxis[1]){
+            registeredAxis[1] = gamepad.axes[1]
+          }
+          else if(!registeredAxis[2]){
+            registeredAxis[2] = gamepad.axes[2]
+          }
+          else if(!registeredAxis[3]){
+            registeredAxis[3] = gamepad.axes[3]
+          }
+          else{
+            gamepad.axes.forEach((axis, index) => {
+              if(registeredAxis[index] != axis){
+                // Only left axis
+                if(axisOfXbox[index] == axisOfXbox[0] || axisOfXbox[index] == axisOfXbox[1]){
+                  console.log(`Left Stick X: ${gamepad.axes[0]}, Left Stick Y: ${gamepad.axes[1]}`);
+                  //socket.emit('left-axis', JSON.stringify({axis: 'LEFT_AXIS', x : gamepad.axes[0], y: gamepad.axes[1]}))
+                  channel.send(JSON.stringify({axis: 'LEFT_AXIS', x : gamepad.axes[0], y: gamepad.axes[1]}))
+                }
+                // Only right axis
+                else if(axisOfXbox[index] == axisOfXbox[2] || axisOfXbox[index] == axisOfXbox[3]){
+                  console.log('Right Stick X:', gamepad.axes[2], 'Right Stick Y:', gamepad.axes[3]);
+                  //socket.emit('right-axis', JSON.stringify({axis: 'RIGHT_AXIS', x: gamepad.axes[2], y: gamepad.axes[3]}))
+                  channel.send(JSON.stringify({axis: 'RIGHT_AXIS', x: gamepad.axes[2], y: gamepad.axes[3]}))
+                }
+              }
+            })
+          }
+    }
+}
+    requestAnimationFrame(pollGamepad);
+}
+  
+pollGamepad();
