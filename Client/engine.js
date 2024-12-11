@@ -259,12 +259,10 @@ function pollGamepad() {
               if(buttonsOfXbox[index] == 'START'){
                 goForOnline = true
                 console.log(buttonsOfXbox[index],' is pressed');
-                //socket.emit('gamepad-button', JSON.stringify({btn: buttonsOfXbox[index]}))
                 channel.send(JSON.stringify({btn: buttonsOfXbox[index]}))
               }
               else if(goForOnline){
                 console.log(buttonsOfXbox[index],' is pressed');
-                //socket.emit('gamepad-button', JSON.stringify({btn: buttonsOfXbox[index]}))
                 channel.send(JSON.stringify({btn: buttonsOfXbox[index]}))
               }
               else{

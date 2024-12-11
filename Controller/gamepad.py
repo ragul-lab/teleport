@@ -49,18 +49,38 @@ def BUTTON_RIGHT_SHOULDER():
     time.sleep(0.1)
     gamepad.release_button(button=vg.XUSB_BUTTON.XUSB_GAMEPAD_RIGHT_SHOULDER)
     gamepad.update()
-    
+
+pressure = 0
+sense = 0    
 def BUTTON_LEFT_TRIGGER():
-    gamepad.left_trigger(value=255)
-    #time.sleep(0.1)
-    #gamepad.left_trigger(value=0)
-    gamepad.update()
+    global pressure, sense
+    if pressure < 255:
+        print(pressure)
+        pressure = pressure + 1
+        sense = time.time()
+        
+        if pressure <= 255:
+            gamepad.left_trigger(value=pressure)
+            gamepad.update()
+        elif pressure >= 255:
+            gamepad.left_trigger(value=255)
+            gamepad.update()
+        SENSE()
 
 def BUTTON_RIGHT_TRIGGER():
-    gamepad.right_trigger(value=255)
-    #time.sleep(0.1)
-    #gamepad.right_trigger(value=0)
-    gamepad.update()
+    global pressure, sense
+    if pressure < 255:
+        print(pressure)
+        pressure = pressure + 1
+        sense = time.time()
+
+        if pressure <= 255:
+            gamepad.right_trigger(value=pressure)
+            gamepad.update()
+        elif pressure >= 255:
+            gamepad.right_trigger(value=255)
+            gamepad.update()
+        SENSE()
 
 def BUTTON_BACK():
     gamepad.press_button(button=vg.XUSB_BUTTON.XUSB_GAMEPAD_BACK)
@@ -138,3 +158,14 @@ def RIGHT_STICK(x, y):
     time.sleep(0.1)
     gamepad.right_joystick_float(x_value_float=-0.0, y_value_float=0.0)
     gamepad.update()
+
+
+def SENSE():
+    global pressure, sense
+    while True:
+        time.sleep(1)  # Check every second
+        if (time.time() - sense) > 10:
+            pressure = 0
+            gamepad.left_trigger(value=0)
+            gamepad.right_trigger(value=0)
+            gamepad.update()
