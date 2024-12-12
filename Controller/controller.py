@@ -62,67 +62,8 @@ def message(data):
         short3cut(data.get('key_1'), data.get('key_2'), data.get('key_3'))
 
     ## Control System for Gamepad ##
-    '''
-    ['A', 'B', 'X', 'Y', 'LEFT_SHOULDER', 'RIGHT_SHOULDER', 'LEFT_TRIGGER', 'RIGHT_TRIGGER', 'BACK', 
-    'START', 'LEFT_THUMB', 'RIGHT_THUMB', 'DPAD_UP', 'DPAD_DOWN', 'DPAD_LEFT', 'DPAD_RIGHT', 'GUIDE']
-    '''
-    if data.get('btn') == "A":
-        print('A Pressed')
-        BUTTON_A()
-
-    if data.get('btn') == "B":
-        BUTTON_B()
-
-    if data.get('btn') == "X":
-        BUTTON_X()
-
-    if data.get('btn') == "Y":
-        BUTTON_Y()
-
-    if data.get('btn') == "LEFT_SHOULDER":
-        BUTTON_LEFT_SHOULDER()
-
-    if data.get('btn') == "RIGHT_SHOULDER":
-        BUTTON_RIGHT_SHOULDER()
-
-    if data.get('btn') == "LEFT_TRIGGER":
-        BUTTON_LEFT_TRIGGER()
-
-    if data.get('btn') == "RIGHT_TRIGGER":
-        BUTTON_RIGHT_TRIGGER()
-
-    if data.get('btn') == "BACK":
-        BUTTON_BACK()
-
-    if data.get('btn') == "START":
-        BUTTON_START()
-
-    if data.get('btn') == "LEFT_THUMB":
-        BUTTON_LEFT_THUMB()
-
-    if data.get('btn') == "RIGHT_THUMB":
-        BUTTON_RIGHT_THUMB()
-
-    if data.get('btn') == "DPAD_UP":
-        BUTTON_DPAD_UP()
-
-    if data.get('btn') == "DPAD_DOWN":
-        BUTTON_DPAD_DOWN()
-
-    if data.get('btn') == "DPAD_LEFT":
-        BUTTON_DPAD_LEFT()
-
-    if data.get('btn') == "DPAD_RIGHT":
-        BUTTON_DPAD_RIGHT()
-
-    if data.get('btn') == "GUIDE":
-        BUTTON_GUIDE()
-    
-    if data.get('axis') == "LEFT_AXIS":
-        LEFT_STICK(data.get('x'), data.get('y'))
-
-    if data.get('axis') == "RIGHT_AXIS":
-        RIGHT_STICK(data.get('x'), data.get('y'))
+    if len(data) > 4:
+        GAMEPAD(data)
 
 
 # Event handler for disconnection

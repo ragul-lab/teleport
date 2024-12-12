@@ -7,6 +7,17 @@ const { exec } = require('child_process');
 let peer
 let protect = false
 
+const iceServers = [
+  {
+      urls: "turn:relay1.expressturn.com:3478?transport=udp",
+      username: "ef6P09MNV0KPJ5XQFU",
+      credential: "RJlgg16t4NZszAHt"
+  },
+  {
+      urls: "stun:stun.l.google.com:19302"
+  }
+];
+
 // Set up socket.io connection
 io.on('connection', (socket) => {
   console.log('Client connected', socket.id);
@@ -80,7 +91,7 @@ server.listen(3000, () => {
 });
 
 let createOffer = () => {
-  peer = new RTCPeerConnection()
+  peer = new RTCPeerConnection({iceServers})
 
   // Get media devices and create data channel & offer
   navigator.mediaDevices.getUserMedia({video: {

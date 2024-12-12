@@ -4,17 +4,30 @@ let stream = document.getElementById('stream')
 let address = document.getElementById('address')
 
 let socket
-let peer = new RTCPeerConnection()
 let channel
 let protect = false
 let connected = false
 
 /* Variables for gamepad controls */
 let gamepadIndex = null
-const buttonsOfXbox = ['A', 'B', 'X', 'Y', 'LEFT_SHOULDER', 'RIGHT_SHOULDER', 'LEFT_TRIGGER', 'RIGHT_TRIGGER', 'BACK', 'START', 'LEFT_THUMB', 'RIGHT_THUMB', 'DPAD_UP', 'DPAD_DOWN', 'DPAD_LEFT', 'DPAD_RIGHT', 'GUIDE']
-const axisOfXbox = ['LEFT_X_AXIS', 'LEFT_Y_AXIS', 'RIGHT_X_AXIS', 'RIGHT_Y_AXIS']
 let registeredAxis = []
 let goForOnline = false
+const buttonsOfXbox = ['A', 'B', 'X', 'Y', 'LEFT_SHOULDER', 'RIGHT_SHOULDER', 'LEFT_TRIGGER', 'RIGHT_TRIGGER', 'BACK', 'START', 'LEFT_THUMB', 'RIGHT_THUMB', 'DPAD_UP', 'DPAD_DOWN', 'DPAD_LEFT', 'DPAD_RIGHT', 'GUIDE']
+const axisOfXbox = ['LEFT_X_AXIS', 'LEFT_Y_AXIS', 'RIGHT_X_AXIS', 'RIGHT_Y_AXIS']
+let gamepad_buttons
+
+const iceServers = [
+    {
+        urls: "turn:relay1.expressturn.com:3478?transport=udp",
+        username: "ef6P09MNV0KPJ5XQFU",
+        credential: "RJlgg16t4NZszAHt"
+    },
+    {
+        urls: "stun:stun.l.google.com:19302"
+    }
+];
+
+let peer = new RTCPeerConnection({iceServers})
 
 stream.addEventListener('click', (e) => {
     socket = io(`http://${address.value}:3000`);
@@ -142,62 +155,64 @@ remote.addEventListener('wheel', (e) => {
 
 /* Capture Keyboard Events */
 window.addEventListener('keydown', function(e) {
-    e.preventDefault()
-    if (e.ctrlKey || e.altKey || e.shiftKey) {
-        let modifiers = [];
-        if (e.ctrlKey) modifiers.push('ctrl');
-        if (e.altKey) modifiers.push('alt');
-        if (e.shiftKey) modifiers.push('shift');
-
-        let keyPressed = e.key.toLowerCase();
-
-        if (modifiers.length > 0 && keyPressed !== 'control' && keyPressed !== 'alt' && keyPressed !== 'shift'){
-            if(modifiers.length == 1){
-                channel.send(JSON.stringify({
-                    type: 'short-2-key', 
-                    hold: modifiers[0], 
-                    key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
-                }))
-                console.log(JSON.stringify({
-                    type: 'short-2-key', 
-                    hold: modifiers[0], 
-                    key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
-                }))
-            }
-            else if(modifiers.length == 2){
-                console.log(JSON.stringify({
-                    type: 'short-3-key',
-                    key_1: modifiers[0],
-                    key_2: modifiers[1], 
-                    key_3: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
-                }))
-                channel.send(JSON.stringify({
-                    type: 'short-3-key',
-                    key_1: modifiers[0],
-                    key_2: modifiers[1], 
-                    key_3: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
-                }))
+    if(connected){
+        e.preventDefault()
+        if (e.ctrlKey || e.altKey || e.shiftKey) {
+            let modifiers = [];
+            if (e.ctrlKey) modifiers.push('ctrl');
+            if (e.altKey) modifiers.push('alt');
+            if (e.shiftKey) modifiers.push('shift');
+    
+            let keyPressed = e.key.toLowerCase();
+    
+            if (modifiers.length > 0 && keyPressed !== 'control' && keyPressed !== 'alt' && keyPressed !== 'shift'){
+                if(modifiers.length == 1){
+                    channel.send(JSON.stringify({
+                        type: 'short-2-key', 
+                        hold: modifiers[0], 
+                        key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                    }))
+                    console.log(JSON.stringify({
+                        type: 'short-2-key', 
+                        hold: modifiers[0], 
+                        key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                    }))
+                }
+                else if(modifiers.length == 2){
+                    console.log(JSON.stringify({
+                        type: 'short-3-key',
+                        key_1: modifiers[0],
+                        key_2: modifiers[1], 
+                        key_3: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                    }))
+                    channel.send(JSON.stringify({
+                        type: 'short-3-key',
+                        key_1: modifiers[0],
+                        key_2: modifiers[1], 
+                        key_3: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : keyPressed
+                    }))
+                }
             }
         }
-    }
-    else{
-        let keyPressed = e.key.toLowerCase();
-
-        // Arrow keys
-        if (keyPressed == 'arrowup' || keyPressed == 'arrowdown' || keyPressed == 'arrowleft' || keyPressed == 'arrowright'){
-            console.log(JSON.stringify({
-                type: 'key-stroke', 
-                key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : null
-            }))
-            channel.send(JSON.stringify({
-                type: 'key-stroke', 
-                key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : null
-            }))
-        }
-        // alphabets
         else{
-            console.log(JSON.stringify({type: 'key-stroke', key: keyPressed.toLowerCase()}))
-            channel.send(JSON.stringify({type: 'key-stroke', key: keyPressed.toLowerCase()}))
+            let keyPressed = e.key.toLowerCase();
+    
+            // Arrow keys
+            if (keyPressed == 'arrowup' || keyPressed == 'arrowdown' || keyPressed == 'arrowleft' || keyPressed == 'arrowright'){
+                console.log(JSON.stringify({
+                    type: 'key-stroke', 
+                    key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : null
+                }))
+                channel.send(JSON.stringify({
+                    type: 'key-stroke', 
+                    key: keyPressed == 'arrowup' ? 'up' : keyPressed == 'arrowdown' ? 'down' : keyPressed == 'arrowleft' ? 'left' : keyPressed == 'arrowright' ? 'right' : null
+                }))
+            }
+            // alphabets
+            else{
+                console.log(JSON.stringify({type: 'key-stroke', key: keyPressed.toLowerCase()}))
+                channel.send(JSON.stringify({type: 'key-stroke', key: keyPressed.toLowerCase()}))
+            }
         }
     }
 });
@@ -231,7 +246,35 @@ remote.addEventListener('click', (e) => {
 
 
 /* Gamepad mechanism */
+
+function keyMap(){
+    gamepad_buttons = {
+        A: 0,
+        B: 0,
+        X: 0,
+        Y: 0,
+        LEFT_SHOULDER: 0,
+        RIGHT_SHOULDER: 0,
+        LEFT_TRIGGER: 0,
+        RIGHT_TRIGGER: 0,
+        BACK: 0,
+        START: 0,
+        LEFT_THUMB: 0,
+        RIGHT_THUMB: 0,
+        DPAD_UP: 0,
+        DPAD_DOWN: 0,
+        DPAD_LEFT: 0,
+        DPAD_RIGHT: 0,
+        GUIDE: 0,
+        LEFT_X_AXIS: 0,
+        LEFT_Y_AXIS: 0,
+        RIGHT_X_AXIS: 0,
+        RIGHT_Y_AXIS: 0
+    }
+}
+
 window.addEventListener("gamepadconnected", function(event) {
+    keyMap()
     console.log("Gamepad connected:", event.gamepad);
     console.log("Gamepad index:", event.gamepad.index);
     gamepadIndex = event.gamepad.index
@@ -258,53 +301,49 @@ function pollGamepad() {
             if (button.pressed) {
               if(buttonsOfXbox[index] == 'START'){
                 goForOnline = true
-                console.log(buttonsOfXbox[index],' is pressed');
-                channel.send(JSON.stringify({btn: buttonsOfXbox[index]}))
+                gamepad_buttons[buttonsOfXbox[index]] = 1
+                console.log(gamepad_buttons);
+                //channel.send(JSON.stringify(gamepad_buttons))
               }
               else if(goForOnline){
-                console.log(buttonsOfXbox[index],' is pressed');
-                channel.send(JSON.stringify({btn: buttonsOfXbox[index]}))
+                gamepad_buttons[buttonsOfXbox[index]] = 1
+                console.log(gamepad_buttons);
+                //channel.send(JSON.stringify(gamepad_buttons))
               }
               else{
                 console.log('Please press start button to activate controller');
               }
             }
+            // Only left axis
+            else if(Math.round(gamepad.axes[0]) > 0 || Math.round(gamepad.axes[0]) < 0 || Math.round(gamepad.axes[1]) > 0 || Math.round(gamepad.axes[1]) < 0){
+                if(goForOnline){
+                    console.log(`Left Stick X: ${gamepad.axes[0]}, Left Stick Y: ${gamepad.axes[1]}`);
+                    gamepad_buttons[axisOfXbox[0]] = gamepad.axes[0]
+                    gamepad_buttons[axisOfXbox[1]] = gamepad.axes[1]
+                    console.log(gamepad_buttons);
+                    //channel.send(JSON.stringify(gamepad_buttons))
+                }
+                else{
+                    console.log('Please press start button to activate controller');
+                }
+            }
+            // Only right axis
+            else if(Math.round(gamepad.axes[2]) > 0 || Math.round(gamepad.axes[2]) < 0 || Math.round(gamepad.axes[3]) > 0 || Math.round(gamepad.axes[3]) < 0){
+                if(goForOnline){
+                    console.log('Right Stick X:', gamepad.axes[2], 'Right Stick Y:', gamepad.axes[3]);
+                    gamepad_buttons[axisOfXbox[2]] = gamepad.axes[2]
+                    gamepad_buttons[axisOfXbox[3]] = gamepad.axes[3]
+                    console.log(gamepad_buttons);
+                    //channel.send(JSON.stringify(gamepad_buttons))
+                }
+                else{
+                    console.log('Please press start button to activate controller');
+                }
+            }
         });
-  
-        // Log joystick axes values
-        if (gamepad && goForOnline) {
-          if(!registeredAxis[0]){
-            registeredAxis[0] = gamepad.axes[0]
-          }
-          else if(!registeredAxis[1]){
-            registeredAxis[1] = gamepad.axes[1]
-          }
-          else if(!registeredAxis[2]){
-            registeredAxis[2] = gamepad.axes[2]
-          }
-          else if(!registeredAxis[3]){
-            registeredAxis[3] = gamepad.axes[3]
-          }
-          else{
-            gamepad.axes.forEach((axis, index) => {
-              if(registeredAxis[index] != axis){
-                // Only left axis
-                if(axisOfXbox[index] == axisOfXbox[0] || axisOfXbox[index] == axisOfXbox[1]){
-                  console.log(`Left Stick X: ${gamepad.axes[0]}, Left Stick Y: ${gamepad.axes[1]}`);
-                  //socket.emit('left-axis', JSON.stringify({axis: 'LEFT_AXIS', x : gamepad.axes[0], y: gamepad.axes[1]}))
-                  channel.send(JSON.stringify({axis: 'LEFT_AXIS', x : gamepad.axes[0], y: gamepad.axes[1]}))
-                }
-                // Only right axis
-                else if(axisOfXbox[index] == axisOfXbox[2] || axisOfXbox[index] == axisOfXbox[3]){
-                  console.log('Right Stick X:', gamepad.axes[2], 'Right Stick Y:', gamepad.axes[3]);
-                  //socket.emit('right-axis', JSON.stringify({axis: 'RIGHT_AXIS', x: gamepad.axes[2], y: gamepad.axes[3]}))
-                  channel.send(JSON.stringify({axis: 'RIGHT_AXIS', x: gamepad.axes[2], y: gamepad.axes[3]}))
-                }
-              }
-            })
-          }
     }
-}
+
+    keyMap()
     requestAnimationFrame(pollGamepad);
 }
   
